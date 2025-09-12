@@ -7,16 +7,6 @@ struct Node {
   struct Node *next;
 };
 
-struct Stack {
-  struct Node *head;
-  int size;
-};
-
-struct Stack initStack() {
-  struct Stack stack = {NULL, 0};
-  return stack;
-}
-
 struct Node *createNode(int value) {
   struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
   newNode->data = value;
@@ -24,43 +14,49 @@ struct Node *createNode(int value) {
   return newNode;
 }
 
-struct Node *push(struct Stack *stack, int value) {
+struct Node *push(struct Node *head, int value) {
   struct Node *newNode = createNode(value);
-  newNode->next = stack->head;
-  stack->head = newNode;
-  stack->size++;
-  return stack->head;
+  newNode->next = head;
+  head = newNode;
+  return head;
 }
 
-struct Node *pop(struct Stack *stack) {
-  if (stack->head == NULL)
+struct Node *pop(struct Node *head) {
+  if (head == NULL)
     return NULL;
-
-  struct Node *tempNode = stack->head;
-  stack->head = stack->head->next;
+  if (head->next == NULL) {
+    printf("Deleted value: %d\n", head->data);
+    free(head);
+    return NULL;
+  }
+  struct Node *tempNode = head;
+  head = head->next;
   printf("Deleted value: %d\n", tempNode->data);
-  stack->size--;
   free(tempNode);
-  return stack->head;
+  return head;
+}
+bool isEmpty(struct Node *head) { return head == NULL; }
+int getSize(struct Node *head) {
+  int count = 0;
+  while (head != NULL) {
+    count++;
+    head = head->next;
+  }
+  return count;
 }
 
-bool isEmpty(struct Stack *stack) { return stack->head == NULL; }
-
-int getSize(struct Stack *stack) { return stack->size; }
-
-int top(struct Stack *stack) {
-  if (stack->head == NULL) {
-    printf("stack empty\n");
+int top(struct Node *head) {
+  if (head == NULL) {
+    printf("List empty\n");
     return -1;
   }
-  return stack->head->data;
+  return head->data;
 }
 
-void display(struct Stack *stack) {
-  struct Node *temp = stack->head;
-  while (temp != NULL) {
-    printf("%d -> ", temp->data);
-    temp = temp->next;
+void display(struct Node *head) {
+  while (head != NULL) {
+    printf("%d -> ", head->data);
+    head = head->next;
   }
   printf("NULL\n");
 }

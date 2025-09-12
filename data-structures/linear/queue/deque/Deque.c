@@ -9,12 +9,12 @@ struct Node {
 };
 
 struct Deque {
-  struct Node *front;
-  struct Node *rear;
+  struct Node *Front;
+  struct Node *Rear;
   int size;
 };
 
-struct Deque initQueue() {
+struct Deque initList() {
   struct Deque dq = {NULL, NULL, 0};
   return dq;
 }
@@ -28,12 +28,12 @@ struct Node *createNode(int value) {
 
 struct Node *insertFront(struct Deque *dq, int value) {
   struct Node *newNode = createNode(value);
-  if (dq->front == NULL)
-    dq->front = dq->rear = newNode;
+  if (dq->Front == NULL)
+    dq->Front = dq->Rear = newNode;
   else {
-    newNode->next = dq->front;
-    dq->front->prev = newNode;
-    dq->front = newNode;
+    newNode->next = dq->Front;
+    dq->Front->prev = newNode;
+    dq->Front = newNode;
   }
   dq->size++;
   return newNode;
@@ -41,78 +41,55 @@ struct Node *insertFront(struct Deque *dq, int value) {
 
 struct Node *insertRear(struct Deque *dq, int value) {
   struct Node *newNode = createNode(value);
-  if (dq->front == NULL)
-    dq->front = dq->rear = newNode;
+  if (dq->Front == NULL)
+    dq->Front = dq->Rear = newNode;
   else {
-    dq->rear->next = newNode;
-    newNode->prev = dq->rear;
-    dq->rear = newNode;
+    dq->Rear->next = newNode;
+    newNode->prev = dq->Rear;
+    dq->Rear = newNode;
   }
   dq->size++;
   return newNode;
 }
 
 struct Node *deleteFront(struct Deque *dq) {
-  if (dq->front == NULL) {
+  if (dq->Front == NULL) {
     printf("Deque is empty\n");
     return NULL;
   }
 
-  struct Node *tempNode = dq->front;
-  printf("Deleted value: %d\n", tempNode->data);
+  struct Node *tempNode = dq->Front;
+  dq->Front = dq->Front->next;
 
-  dq->front = dq->front->next;
-
-  if (dq->front != NULL)
-    dq->front->prev = NULL;
-  else
-    dq->rear = NULL;
-
+  if (dq->Front != NULL) {
+    printf("Deleted value: %d\n", tempNode->data);
+    dq->Front->prev = NULL;
+  }
   free(tempNode);
   dq->size--;
-  return dq->front;
+  return dq->Front;
 }
 
 struct Node *deleteRear(struct Deque *dq) {
-  if (dq->front == NULL) {
+  if (dq->Front == NULL) {
     printf("Deque is empty\n");
     return NULL;
   }
 
-  struct Node *tempNode = dq->rear;
-  printf("Deleted value: %d\n", tempNode->data);
-  dq->rear = dq->rear->prev;
+  struct Node *tempNode = dq->Rear;
+  dq->Rear = dq->Rear->prev;
 
-  if (dq->rear != NULL)
-    dq->rear->next = NULL;
-  else
-    dq->front = NULL;
-
+  if (dq->Rear != NULL) {
+    printf("Deleted value: %d\n", tempNode->data);
+    dq->Rear->next = NULL;
+  }
   free(tempNode);
   dq->size--;
-  return dq->rear;
-}
-
-int getSize(struct Deque *dq) { return dq->size; }
-
-int getFront(struct Deque *dq) {
-  if (dq->front == NULL) {
-    printf("List empty\n");
-    return -1;
-  }
-  return dq->front->data;
-}
-
-int getRear(struct Deque *dq) {
-  if (dq->rear == NULL) {
-    printf("List empty\n");
-    return -1;
-  }
-  return dq->rear->data;
+  return dq->Rear;
 }
 
 void traverseForward(struct Deque *dq) {
-  struct Node *tempNode = dq->front;
+  struct Node *tempNode = dq->Front;
   while (tempNode != NULL) {
     printf("%d <-> ", tempNode->data);
     tempNode = tempNode->next;
@@ -121,7 +98,7 @@ void traverseForward(struct Deque *dq) {
 }
 
 void traverseBackward(struct Deque *dq) {
-  struct Node *tempNode = dq->rear;
+  struct Node *tempNode = dq->Rear;
   while (tempNode != NULL) {
     printf("%d <-> ", tempNode->data);
     tempNode = tempNode->prev;
@@ -129,4 +106,22 @@ void traverseBackward(struct Deque *dq) {
   printf("NULL\n");
 }
 
-bool isEmpty(struct Deque *dq) { return (dq->front == NULL); }
+int getSize(struct Deque *dq) { return dq->size; }
+
+int getfront(struct Deque *dq) {
+  if (dq->Front == NULL) {
+    printf("List empty\n");
+    return;
+  }
+  return dq->Front->data;
+}
+
+int getRear(struct Deque *dq) {
+  if (dq->Rear == NULL) {
+    printf("List empty\n");
+    return;
+  }
+  return dq->Rear->data;
+}
+
+bool isEmpty(struct Deque *dq) { return dq->Front == NULL; }

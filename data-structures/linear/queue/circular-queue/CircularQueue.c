@@ -18,15 +18,15 @@ struct CircularQueue initQueue() {
   return queue;
 }
 
-struct Node *createNode(int value) {
+struct Node *createNode(int data) {
   struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-  newNode->data = value;
+  newNode->data = data;
   newNode->next = NULL;
   return newNode;
 }
 
-struct Node *enqueue(struct CircularQueue *queue, int value) {
-  struct Node *newNode = createNode(value);
+struct Node *enqueue(struct CircularQueue *queue, int data) {
+  struct Node *newNode = createNode(data);
   if (queue->head == NULL) {
     queue->head = queue->tail = newNode;
     newNode->next = newNode;
@@ -43,7 +43,7 @@ struct Node *dequeue(struct CircularQueue *queue) {
   if (queue->head == NULL)
     return NULL;
   if (queue->head == queue->tail) {
-    printf("Deleted value : %d\n", queue->head->data);
+    printf("Deleted data : %d\n", queue->head->data);
     free(queue->head);
     queue->head = queue->tail = NULL;
     queue->size--;
@@ -52,7 +52,7 @@ struct Node *dequeue(struct CircularQueue *queue) {
   struct Node *tempNode = queue->head;
   queue->head = queue->head->next;
   queue->tail->next = queue->head;
-  printf("Deleted value : %d\n", tempNode->data);
+  printf("Deleted data : %d\n", tempNode->data);
   free(tempNode);
   queue->size--;
   return queue->head;
@@ -78,7 +78,7 @@ int front(struct CircularQueue *queue) {
   return queue->head->data;
 }
 
-int rear(struct CircularQueue *queue) {
+int back(struct CircularQueue *queue) {
   if (queue->tail == NULL) {
     printf("queue empty\n");
     return -1;
@@ -88,4 +88,4 @@ int rear(struct CircularQueue *queue) {
 
 int getSize(struct CircularQueue *queue) { return queue->size; }
 
-bool isEmpty(struct CircularQueue *queue) { return (queue->head == NULL); }
+bool isEmpty(struct CircularQueue *queue) { return queue->head == NULL; }
