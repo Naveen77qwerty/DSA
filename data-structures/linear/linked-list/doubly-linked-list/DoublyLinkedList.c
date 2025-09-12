@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct Node {
   int data;
@@ -192,13 +193,21 @@ struct Node *deleteKey(struct DoublyLinkedList *list, int deleteData) {
 }
 
 struct Node *search(struct DoublyLinkedList *list, int value) {
+  if (list->head == NULL) {
+    printf("Empty\n");
+    return NULL;
+  }
   struct Node *tempNode = list->head;
+  int pos = 0;
   while (tempNode != NULL) {
     if (tempNode->data == value) {
+      printf("Data %d found at position %d\n", tempNode->data, pos);
       return tempNode;
     }
     tempNode = tempNode->next;
+    pos++;
   }
+  printf("Data %d not found\n", value);
   return NULL;
 }
 
@@ -208,7 +217,6 @@ struct Node *update(struct DoublyLinkedList *list, int oldValue, int newValue) {
     tempNode->data = newValue;
     return tempNode;
   }
-  printf("Value not found\n");
   return NULL;
 }
 
@@ -259,11 +267,8 @@ void traverseBackward(struct DoublyLinkedList *list) {
   printf("NULL\n");
 }
 
-void isEmpty(struct DoublyLinkedList *list) {
-  if (list->head == NULL)
-    printf("List is empty\n");
-  else
-    printf("List isn't empty\n");
+bool isEmpty(struct DoublyLinkedList *list) {
+  return list->head == NULL;
 }
 
 int getSize(struct DoublyLinkedList *list) { return list->size; }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct Node {
   int data;
@@ -24,72 +25,6 @@ struct Node *createNode(int value) {
   newNode->next = newNode->prev = NULL;
   return newNode;
 }
-
-void traverseForward(struct DoublyCircularLinkedList *list) {
-  if (list->head == NULL) {
-    printf("Empty\n");
-    return;
-  }
-  struct Node *tempNode = list->head;
-  do {
-    printf("%d <-> ", tempNode->data);
-    tempNode = tempNode->next;
-  } while (tempNode != list->head);
-  printf("(back to head)\n");
-}
-
-void traverseBackward(struct DoublyCircularLinkedList *list) {
-  if (list->head == NULL) {
-    printf("Empty\n");
-    return;
-  }
-  struct Node *tempNode = list->tail;
-  do {
-    printf("%d <-> ", tempNode->data);
-    tempNode = tempNode->prev;
-  } while (tempNode != list->tail);
-  printf("(back to tail)\n");
-}
-
-void isEmpty(struct DoublyCircularLinkedList *list) {
-  printf("List %s empty\n", list->head ? "isn't" : "is");
-}
-
-void search(struct DoublyCircularLinkedList *list, int searchData) {
-  if (list->head == NULL) {
-    printf("Empty\n");
-    return;
-  }
-  int pos = 0;
-  struct Node *tempNode = list->head;
-  do {
-    if (tempNode->data == searchData) {
-      printf("Data %d found at position %d\n", tempNode->data, pos);
-      return;
-    }
-    pos++;
-    tempNode = tempNode->next;
-  } while (tempNode != list->head);
-  printf("Data %d not found\n", searchData);
-}
-
-int front(struct DoublyCircularLinkedList *list) {
-  if (list->head == NULL) {
-    printf("List empty\n");
-    return -1;
-  }
-  return list->head->data;
-}
-
-int back(struct DoublyCircularLinkedList *list) {
-  if (list->tail == NULL) {
-    printf("List empty\n");
-    return -1;
-  }
-  return list->tail->data;
-}
-
-int size(struct DoublyCircularLinkedList *list) { return list->size; }
 
 struct Node *insertFirst(struct DoublyCircularLinkedList *list, int value) {
   struct Node *newNode = createNode(value);
@@ -258,25 +193,65 @@ struct Node *deleteKey(struct DoublyCircularLinkedList *list, int deleteData) {
   return list->head;
 }
 
-struct Node *update(struct DoublyCircularLinkedList *list, int updateVal,
-                    int newData) {
+void traverseForward(struct DoublyCircularLinkedList *list) {
   if (list->head == NULL) {
-    printf("Empty List\n");
-    return NULL;
+    printf("Empty\n");
+    return;
   }
-
   struct Node *tempNode = list->head;
   do {
-    if (tempNode->data == updateVal) {
-      tempNode->data = newData;
-      printf("Node updated: %d -> %d\n", updateVal, newData);
-      return list->head;
-    }
+    printf("%d <-> ", tempNode->data);
     tempNode = tempNode->next;
   } while (tempNode != list->head);
-  printf("Node with given data: %d not found\n", updateVal);
-  return list->head;
+  printf("(back to head)\n");
 }
+
+void traverseBackward(struct DoublyCircularLinkedList *list) {
+  if (list->head == NULL) {
+    printf("Empty\n");
+    return;
+  }
+  struct Node *tempNode = list->tail;
+  do {
+    printf("%d <-> ", tempNode->data);
+    tempNode = tempNode->prev;
+  } while (tempNode != list->tail);
+  printf("(back to tail)\n");
+}
+
+bool isEmpty(struct DoublyCircularLinkedList *list) {
+  return list->head == NULL;
+}
+
+struct Node *update(struct DoublyCircularLinkedList *list, int updateVal,
+                    int newData) {
+  struct Node *tempNode = search(list, updateVal);
+  if (tempNode != NULL) {
+    tempNode->data = newData;
+    return tempNode;
+  }
+  return NULL;
+}
+
+void search(struct DoublyCircularLinkedList *list, int searchData) {
+  if (list->head == NULL) {
+    printf("Empty\n");
+    return;
+  }
+  int pos = 0;
+  struct Node *tempNode = list->head;
+  do {
+    if (tempNode->data == searchData) {
+      printf("Data %d found at position %d\n", tempNode->data, pos);
+      return;
+    }
+    pos++;
+    tempNode = tempNode->next;
+  } while (tempNode != list->head);
+  printf("Data %d not found\n", searchData);
+}
+
+int size(struct DoublyCircularLinkedList *list) { return list->size; }
 
 struct Node *reverse(struct DoublyCircularLinkedList *list) {
   if (list->head == NULL) {

@@ -24,59 +24,6 @@ struct Node *createNode(int value) {
   return newNode;
 }
 
-void isEmpty(struct SinglyCircularLinkedList *list) {
-  printf("List %s empty\n", list->head ? "isn't" : "is");
-}
-
-void traverse(struct SinglyCircularLinkedList *list) {
-  if (list->head == NULL) {
-    printf("Empty\n");
-    return;
-  }
-  struct Node *tempNode = list->head;
-  do {
-    printf("%d -> ", tempNode->data);
-    tempNode = tempNode->next;
-  } while (tempNode != list->head);
-  printf("(back to head)\n");
-}
-int front(struct SinglyCircularLinkedList *list) {
-  if (list->head == NULL) {
-    printf("List empty\n");
-    return -1;
-  }
-  return list->head->data;
-}
-
-int back(struct SinglyCircularLinkedList *list) {
-  if (list->tail == NULL) {
-    printf("List empty\n");
-    return -1;
-  }
-  return list->tail->data;
-}
-
-int size(struct SinglyCircularLinkedList *list) { return list->size; }
-
-struct Node *search(struct SinglyCircularLinkedList *list, int searchData) {
-  if (list->head == NULL) {
-    printf("Empty\n");
-    return NULL;
-  }
-  int pos = 0;
-  struct Node *tempNode = list->head;
-  do {
-    if (tempNode->data == searchData) {
-      printf("Data %d found at position %d\n", tempNode->data, pos);
-      return tempNode;
-    }
-    pos++;
-    tempNode = tempNode->next;
-  } while (tempNode != list->head);
-  printf("Data %d not found\n", searchData);
-  return NULL;
-}
-
 struct Node *insertFirst(struct SinglyCircularLinkedList *list, int value) {
   struct Node *newNode = createNode(value);
   if (list->head == NULL) {
@@ -197,22 +144,50 @@ struct Node *deleteAt(struct SinglyCircularLinkedList *list, int position) {
   return list->head;
 }
 
-struct Node *update(struct SinglyCircularLinkedList *list, int updateVal,
-                    int newData) {
-  if (list->head == NULL) {
-    printf("Empty List\n");
-    return NULL;
-  }
+void isEmpty(struct SinglyCircularLinkedList *list) {
+  printf("List %s empty\n", list->head ? "isn't" : "is");
+}
 
+void traverse(struct SinglyCircularLinkedList *list) {
+  if (list->head == NULL) {
+    printf("Empty\n");
+    return;
+  }
   struct Node *tempNode = list->head;
   do {
-    if (tempNode->data == updateVal) {
-      tempNode->data = newData;
-      printf("Node updated: %d -> %d\n", updateVal, newData);
-      return list->head;
-    }
+    printf("%d -> ", tempNode->data);
     tempNode = tempNode->next;
   } while (tempNode != list->head);
-  printf("Node with given data: %d not found\n", updateVal);
-  return list->head;
+  printf("(back to head)\n");
+}
+
+int size(struct SinglyCircularLinkedList *list) { return list->size; }
+
+struct Node *update(struct SinglyCircularLinkedList *list, int updateVal,
+                    int newData) {
+  struct Node *tempNode = search(list, updateVal);
+  if (tempNode != NULL) {
+    tempNode.data = newData;
+    return tempNode;
+  }
+  return NULL;
+}
+
+struct Node *search(struct SinglyCircularLinkedList *list, int searchData) {
+  if (list->head == NULL) {
+    printf("Empty\n");
+    return NULL;
+  }
+  int pos = 0;
+  struct Node *tempNode = list->head;
+  do {
+    if (tempNode->data == searchData) {
+      printf("Data %d found at position %d\n", tempNode->data, pos);
+      return tempNode;
+    }
+    pos++;
+    tempNode = tempNode->next;
+  } while (tempNode != list->head);
+  printf("Data %d not found\n", searchData);
+  return NULL;
 }

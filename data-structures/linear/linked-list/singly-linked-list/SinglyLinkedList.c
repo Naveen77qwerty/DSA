@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct Node {
   int data;
@@ -11,66 +12,6 @@ struct Node *createNode(int value) {
   newNode->data = value;
   newNode->next = NULL;
   return newNode;
-}
-
-int getSize(struct Node *head) {
-  int count = 0;
-  while (head != NULL) {
-    count++;
-    head = head->next;
-  }
-  return count;
-}
-
-void traverse(struct Node *head) {
-  while (head != NULL) {
-    printf("%d -> ", head->data);
-    head = head->next;
-  }
-  printf("NULL\n");
-}
-
-struct Node *update(struct Node *head, int updateValue, int newData) {
-  struct Node *tempNode = head;
-  while (tempNode != NULL && tempNode->data != updateValue)
-    tempNode = tempNode->next;
-
-  if (tempNode == NULL) {
-    printf("Node with given data: %d not found\n", updateValue);
-    return head;
-  }
-  tempNode->data = newData;
-  return head;
-}
-
-void search(struct Node *head, int searchData) {
-  struct Node *tempNode = head;
-  int pos = 0;
-  while (tempNode != NULL) {
-    if (tempNode->data == searchData) {
-      printf("Data %d found at position %d\n", tempNode->data, pos);
-      return;
-    }
-    tempNode = tempNode->next;
-    pos++;
-  }
-  printf("Data %d not found\n", searchData);
-}
-
-int getAtIndex(struct Node *head, int index) {
-  int indexCounter = 0;
-  while (head != NULL) {
-    if (index == indexCounter)
-      return head->data;
-    head = head->next;
-    indexCounter++;
-  }
-  printf("Index out of range\n");
-  return -1;
-}
-
-void isEmpty(struct Node *head) {
-  printf("List %s empty\n", head ? "isn't" : "is");
 }
 
 struct Node *insertFirst(struct Node *head, int value) {
@@ -205,6 +146,65 @@ struct Node *deleteKey(struct Node *head, int deleteData) {
   free(toDelete);
   return head;
 }
+
+int getSize(struct Node *head) {
+  int count = 0;
+  while (head != NULL) {
+    count++;
+    head = head->next;
+  }
+  return count;
+}
+
+void traverse(struct Node *head) {
+  while (head != NULL) {
+    printf("%d -> ", head->data);
+    head = head->next;
+  }
+  printf("NULL\n");
+}
+
+struct Node *update(struct Node *head, int updateValue, int newData) {
+  struct Node *tempNode = search(head, updateValue);
+  if (tempNode != NULL) {
+    tempNode->data = newData;
+    return tempNode;
+  }
+  return NULL;
+}
+
+struct Node *search(struct Node *head, int searchData) {
+  if (list->head == NULL) {
+    printf("Empty\n");
+    return NULL;
+  }
+  struct Node *tempNode = head;
+  int pos = 0;
+  while (tempNode != NULL) {
+    if (tempNode->data == searchData) {
+      printf("Data %d found at position %d\n", tempNode->data, pos);
+      return tempNode;
+    }
+    tempNode = tempNode->next;
+    pos++;
+  }
+  printf("Data %d not found\n", searchData);
+  return NULL;
+}
+
+int getAtIndex(struct Node *head, int index) {
+  int indexCounter = 0;
+  while (head != NULL) {
+    if (index == indexCounter)
+      return head->data;
+    head = head->next;
+    indexCounter++;
+  }
+  printf("Index out of range\n");
+  return -1;
+}
+
+bool isEmpty(struct Node *head) { return head == NULL; }
 
 struct Node *reverse(struct Node *head) {
   if (head == NULL)
