@@ -167,7 +167,7 @@ struct Node *update(struct SinglyCircularLinkedList *list, int updateVal,
                     int newData) {
   struct Node *tempNode = search(list, updateVal);
   if (tempNode != NULL) {
-    tempNode.data = newData;
+    tempNode->data = newData;
     return tempNode;
   }
   return NULL;

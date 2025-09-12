@@ -1,6 +1,7 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+
 
 struct Node {
   int data;
@@ -233,22 +234,23 @@ struct Node *update(struct DoublyCircularLinkedList *list, int updateVal,
   return NULL;
 }
 
-void search(struct DoublyCircularLinkedList *list, int searchData) {
+struct Node *search(struct DoublyCircularLinkedList *list, int searchData) {
   if (list->head == NULL) {
     printf("Empty\n");
-    return;
+    return NULL;
   }
   int pos = 0;
   struct Node *tempNode = list->head;
   do {
     if (tempNode->data == searchData) {
       printf("Data %d found at position %d\n", tempNode->data, pos);
-      return;
+      return tempNode;
     }
     pos++;
     tempNode = tempNode->next;
   } while (tempNode != list->head);
   printf("Data %d not found\n", searchData);
+  return NULL;
 }
 
 int size(struct DoublyCircularLinkedList *list) { return list->size; }

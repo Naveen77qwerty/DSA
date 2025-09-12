@@ -1,6 +1,7 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+
 
 struct Node {
   int data;
@@ -174,7 +175,7 @@ struct Node *update(struct Node *head, int updateValue, int newData) {
 }
 
 struct Node *search(struct Node *head, int searchData) {
-  if (list->head == NULL) {
+  if (head == NULL) {
     printf("Empty\n");
     return NULL;
   }

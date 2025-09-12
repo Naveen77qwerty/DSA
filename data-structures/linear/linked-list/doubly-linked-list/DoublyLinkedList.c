@@ -1,6 +1,7 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+
 
 struct Node {
   int data;
@@ -267,8 +268,6 @@ void traverseBackward(struct DoublyLinkedList *list) {
   printf("NULL\n");
 }
 
-bool isEmpty(struct DoublyLinkedList *list) {
-  return list->head == NULL;
-}
+bool isEmpty(struct DoublyLinkedList *list) { return list->head == NULL; }
 
 int getSize(struct DoublyLinkedList *list) { return list->size; }
