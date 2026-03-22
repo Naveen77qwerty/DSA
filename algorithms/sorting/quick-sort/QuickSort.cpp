@@ -1,33 +1,27 @@
 #include <vector>
 using namespace std;
 
-class QuickSort {
-  vector<int> vec;
+int partition(vector<int> &arr, int low, int high) {
+  int i = low - 1;
+  int pivot = arr[high];
 
-public:
-  QuickSort(vector<int> &vec) { this->vec = vec; }
-
-  int partition(vector<int> &vec, int start, int end) {
-    int i = start - 1, pivot = vec[end];
-
-    for (int j = start; j < end; j++) {
-      if (vec[j] <= pivot) {
-        i++;
-        swap(vec[i], vec[j]);
-      }
-    }
-
-    i++;
-    swap(vec[i], vec[end]);
-    return i;
-  }
-
-  void quickSort(vector<int> &vec, int start, int end) {
-    if (start < end) {
-      int pi = partition(vec, start, end);
-
-      quickSort(vec, start, pi - 1);
-      quickSort(vec, pi + 1, end);
+  for (int j = low; j < high; j++) {
+    if (arr[j] <= pivot) {
+      i++;
+      swap(arr[i], arr[j]);
     }
   }
-};
+
+  swap(arr[i + 1], arr[high]);
+
+  return i + 1;
+}
+
+void quickSort(vector<int> &arr, int low, int high) {
+  if (low < high) {
+    int pivot = partition(arr, low, high);
+
+    quickSort(arr, low, pivot - 1);
+    quickSort(arr, pivot + 1, high);
+  }
+}

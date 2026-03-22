@@ -1,49 +1,36 @@
 #include <vector>
 using namespace std;
 
-class MergeSort {
-  vector<int> vec;
+void merge(vector<int> &arr, int l, int m, int r) {
+  vector<int> left(arr.begin() + l, arr.begin() + m + 1);
+  vector<int> right(arr.begin() + m + 1, arr.begin() + r + 1);
 
-public:
-  MergeSort(vector<int> &vec) { this->vec = vec; }
+  int i = 0, j = 0, k = l;
 
-  void merge(vector<int> &vec, int start, int mid, int end) {
-    vector<int> temp;
-    int i = start, j = mid + 1;
-
-    while (i <= mid && j <= end) {
-      if (vec[i] < vec[j]) {
-        temp.push_back(vec[i]);
-        i++;
-      } else {
-        temp.push_back(vec[j]);
-        j++;
-      }
-    }
-
-    while (i <= mid) {
-      temp.push_back(vec[i]);
-      i++;
-    }
-
-    while (j <= end) {
-      temp.push_back(vec[j]);
-      j++;
-    }
-
-    for (int index = 0; index < temp.size(); index++) {
-      vec[index + start] = temp[index];
+  while (i < left.size() && j < right.size()) {
+    if (left[i] <= right[j]) {
+      arr[k++] = left[i++];
+    } else {
+      arr[k++] = right[j++];
     }
   }
 
-  void mergeSort(vector<int> &vec, int start, int end) {
-    if (start < end) {
-      int mid = start + (end - start) / 2;
-
-      mergeSort(vec, start, mid);
-      mergeSort(vec, mid + 1, end);
-
-      merge(vec, start, mid, end);
-    }
+  while (i < left.size()) {
+    arr[k++] = left[i++];
   }
-};
+
+  while (j < right.size()) {
+    arr[k++] = right[j++];
+  }
+}
+
+void mergeSort(vector<int> &arr, int l, int r) {
+  if (l < r) {
+    int mid = l + (r - l) / 2;
+
+    mergeSort(arr, l, mid);
+    mergeSort(arr, mid + 1, r);
+
+    merge(arr, l, mid, r);
+  }
+}
